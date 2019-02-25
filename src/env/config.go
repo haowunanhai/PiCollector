@@ -7,17 +7,11 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// Config cxserver的配置信息
+// Config 的配置信息
 type Config struct {
-	ZkAddr     map[string][]string               `yaml:"zkAddr"`
-	ZkPassword map[string]string                 `yaml:"zkPassword"`
-	ZkRoot     map[string]string                 `yaml:"zkRoot"`
-	ZkAuth     map[string]string                 `yaml:"zkAuth"`
-	LogFile    string                            `yaml:"logfile"`
-	LogLevel   string                            `yaml:"loglevel"`
-	MaxNoFile  int                               `yaml:"maxnofile"`
-	IDCBackup  map[string]string                 `yaml:"idcbackup"`
-	Data       map[string]map[string]interface{} `yaml:"data"`
+	LogFile  string                            `yaml:"logfile"`
+	LogLevel string                            `yaml:"loglevel"`
+	Data     map[string]map[string]interface{} `yaml:"data"`
 }
 
 // LoadConfig 装载配置文件内容
