@@ -5,7 +5,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-
+	"strings"
+	"time"
+	"strconv"
+	
 	"common/log"
 	"golang.org/x/net/html"
 
@@ -25,7 +28,7 @@ func main() {
 }
 
 const (
-	downloadPath = "/data0/liubin11/Test/PiCollector/download/"
+	downloadPath = "../../download/"
 )
 
 func crawler(url string) []string {
@@ -72,7 +75,15 @@ func crawler(url string) []string {
 						if err != nil {
 							continue
 						}
-						imgName := downloadPath + a.Val
+						
+						tokens := strings.Split(a.Val, ".")
+						if len(tokens) == 0{
+							log.Error("Crawler", "img name has no suffix")
+							continue
+						}
+						suffix := "." + tokens[len(tokens) - 1]
+						
+						imgName := downloadPath + strconv.FormatInt(time.Now().UnixNano(), 10) + suffix
 						//读取img数据
 						pic := ReadImgData(imgLink.String())
 
@@ -117,8 +128,8 @@ func ReadImgData(url string) []byte {
 func breadFirst(f func(item string) []string, workList []string) {
 	//排重
 	urlMap := make(map[string]struct{})
-
-	if len(workList) > 0 {
+	loopCnt := 2
+	for loopCnt > 0 {
 		items := workList
 		workList = nil
 
@@ -131,6 +142,8 @@ func breadFirst(f func(item string) []string, workList []string) {
 
 			urlMap[item] = struct{}{}
 		}
+		
+		loopCnt--
 	}
 }
 
